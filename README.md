@@ -1,6 +1,6 @@
 # Simple Git and GitHub Guide
 
-###### The easiest way to use local git and GitHub together is to start by making a GitHub repository and then cloning it into a local repository. That way, you dont run into issues with different branch names like Main and Master.
+#### The easiest way to create your own repository is to start by making a GitHub repository and then cloning it into a local repository. That way, you dont run into issues with different branch names like Main and Master.
 
 1. Create a repository on GitHub
 	- Decide on a suitable names
@@ -17,3 +17,37 @@
 		- Commit
 		- Push changes to GitHub
 
+#### Usefull commands:
+**Local repository related commands**
+- Initialise an empty local repository
+	- git init 
+- See status of the git repository
+	- git status
+- Add files for staging
+	- git add <filename> *or* git add -A *for all files*
+- Commit changes
+	- git commit -m "<describe change>"
+- See branches
+	- git branch *for local branches*
+	- git branch -r *for remote branches*
+	- git branch -a *for all branches*
+- Change branch
+	- git checkout <branch you want to change to>
+- See commit log
+	- git log
+- Merge two branches
+	- git merge <branch you want to merge into the branch you are in>
+
+**Remote repository related commands**
+- Add a remote repository to a local repository
+	- git add remote origin <remote repository link>
+- Clone a remote repository into a local repository
+	- git clone <remote repository link>
+- Pull changes from remote repository (combination of *fetch* and *merge*)
+	- git pull 
+- Push changes to remote repository
+	- git push
+
+**GitHub specific actions**
+- Forking a repository means that you make a copy of someone else's repository and save the copy as a repository that you *own*
+- If you make changes to your fork of a repository, in order to submit those changes to the original repository. You have to create a pull request.
