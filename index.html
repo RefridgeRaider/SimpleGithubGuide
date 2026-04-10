@@ -1,26 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Simple Git and GitHub Guide</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Git & GitHub Guide</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const list = document.getElementById("visitorList");
+
+  fetch("https://api.github.com/repos/RefridgeRaider/SimpleGithubGuide/contents/Visitors")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      list.innerHTML = "";
+
+      if (!Array.isArray(data)) {
+        throw new Error("Expected an array of files, but got something else.");
+      }
+
+      const visibleFiles = data.filter(file => {
+        const nameWithoutExtension = file.name.split(".")[0];
+        return nameWithoutExtension !== "CREATE A FILE WITH YOUR USERNAME AS THE NAME";
+      });
+
+      if (visibleFiles.length === 0) {
+        list.innerHTML = "<li>No visitors found.</li>";
+        return;
+      }
+
+      visibleFiles
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach(file => {
+          const name = file.name.replace(/\.[^/.]+$/, "");
+          const li = document.createElement("li");
+          li.textContent = name;
+          list.appendChild(li);
+        });
+    })
+    .catch(error => {
+      console.error(error);
+      list.innerHTML = `<li>Could not load visitors: ${error.message}</li>`;
+    });
+});
+</script>
+
 <body>
+  <header class="hero">
+    <nav class="navbar">
+      <div class="logo">Git & GitHub Guide</div>
+      <ul class="nav-links">
+        <li><a href="#intro">Intro</a></li>
+        <li><a href="#git">Git Basics</a></li>
+        <li><a href="#github">GitHub Basics</a></li>
+        <li><a href="#workflow">Workflow</a></li>
+        <li><a href="#commands">Commands</a></li>
+      </ul>
+    </nav>
 
-<div class="container">
-    <h1>Simple Git and GitHub Guide</h1>
+    <div class="hero-content">
+      <h1>Simple Git & GitHub Guide</h1>
+      <p>
+        Learn version control, understand GitHub, and follow a practical workflow
+        with an elegant beginner-friendly guide.
+      </p>
+      <a href="#intro" class="btn">Start Learning</a>
+    </div>
+  </header>
 
-    <img src="img_github_logo.jpg" alt="GitHub Logo" class="logo">
+  <main>
+    <section id="intro" class="section card-section">
+      <div class="section-heading">
+        <span class="tag">Getting Started</span>
+        <h2>What are Git and GitHub?</h2>
+      </div>
+      <div class="grid two-col">
+        <article class="card">
+          <h3>Git</h3>
+          <p>
+            Git is a version control system that tracks changes in your code.
+            It helps you save progress, compare versions, and collaborate safely.
+          </p>
+        </article>
+        <article class="card">
+          <h3>GitHub</h3>
+          <p>
+            GitHub is a cloud platform that hosts Git repositories online.
+            It helps teams share projects, review code, and manage collaboration.
+          </p>
+        </article>
+      </div>
+    </section>
 
-    <p>
-        Learn the basics of Git and GitHub in a simple and beginner-friendly way.
-        This guide will help you understand version control, repositories,
-        commits, and collaboration.
+    <section id="git" class="section alt-section">
+      <div class="section-heading">
+        <span class="tag">Git Core Concepts</span>
+        <h2>Understand the Basics of Git</h2>
+      </div>
+
+      <div class="grid three-col">
+        <article class="info-box">
+          <h3>Repository</h3>
+          <p>A project folder tracked by Git.</p>
+        </article>
+        <article class="info-box">
+          <h3>Commit</h3>
+          <p>A saved snapshot of your project at a certain moment.</p>
+        </article>
+        <article class="info-box">
+          <h3>Branch</h3>
+          <p>A separate line of development used for features or fixes.</p>
+        </article>
+      </div>
+
+      
+      <div class="highlight">
+        <h3>Why use Git?</h3>
+        <p>
+          Git makes it easy to track changes, undo mistakes, experiment safely,
+          and work with others without overwriting each other’s code.
+        </p>
+      </div>
+    </section>
+
+    <section id="github" class="section card-section">
+      <div class="section-heading">
+        <span class="tag">GitHub Features</span>
+        <h2>What GitHub Helps You Do</h2>
+      </div>
+
+      <div class="grid two-col">
+        <article class="card">
+          <h3>Store Repositories Online</h3>
+          <p>
+            Keep your projects in the cloud so they are accessible from anywhere.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Collaborate with Teams</h3>
+          <p>
+            Invite others, review pull requests, and work together efficiently.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Track Issues</h3>
+          <p>
+            Organize bugs, enhancements, and tasks with GitHub Issues.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Showcase Projects</h3>
+          <p>
+            Build a portfolio and share your work publicly or privately.
+          </p>
+        </article>
+      </div>
+    </section>
+
+        <section id="workflow" class="section alt-section">
+      <div class="section-heading">
+        <span class="tag">Standard Workflow</span>
+        <h2>A Simple Git & GitHub Workflow</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Create or Clone a Repository</h3>
+            <p>Start a new project or copy an existing repository to your computer.</p>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Make Changes</h3>
+            <p>Edit files, add features, or fix bugs in your local project.</p>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Stage and Commit</h3>
+            <p>Stage your changes and save them as a commit with a clear message.</p>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Push to GitHub</h3>
+            <p>Upload your commits from your computer to GitHub.</p>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Open a Pull Request</h3>
+            <p>Ask for review before merging your changes into the main branch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="commands" class="section card-section">
+      <div class="section-heading">
+        <span class="tag">Useful Commands</span>
+        <h2>Common Git Commands</h2>
+      </div>
+
+      <div class="command-list">
+        <div class="command-card">
+          <code>git init</code>
+          <p>Initialize a new Git repository.</p>
+        </div>
+        <div class="command-card">
+          <code>git clone URL</code>
+          <p>Copy a repository from GitHub to your computer.</p>
+        </div>
+        <div class="command-card">
+          <code>git status</code>
+          <p>Check the current state of your files.</p>
+        </div>
+        <div class="command-card">
+          <code>git add .</code>
+          <p>Stage all changed files.</p>
+        </div>
+        <div class="command-card">
+          <code>git commit -m "message"</code>
+          <p>Save staged changes with a commit message.</p>
+        </div>
+        <div class="command-card">
+          <code>git push</code>
+          <p>Send your commits to GitHub.</p>
+        </div>
+        <div class="command-card">
+          <code>git pull</code>
+          <p>Download the latest changes from GitHub.</p>
+        </div>
+        <div class="command-card">
+          <code>git branch</code>
+          <p>View or manage branches.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="visitors" class="section card-section">
+    <div class="section-heading">
+        <span class="tag">Community</span>
+        <h2>Visitors</h2>
+    </div>
+
+    <p class="visitor-desc">
+        People who have added their name to this project:
     </p>
 
-    <button>Get Started</button>
-</div>
+    <ul id="visitorList" class="visitor-list"></ul>
+    </section>
 
+    <section class="section final-banner">
+      <h2>Keep Practicing</h2>
+      <p>
+        The best way to learn Git and GitHub is by using them regularly on small projects.
+        Start simple, commit often, and build confidence over time.
+      </p>
+      <a href="#top" class="btn secondary-btn">Back to Top</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Simple Git & GitHub Guide • Designed for beginners</p>
+  </footer>
 </body>
 </html>
